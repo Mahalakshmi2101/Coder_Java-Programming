@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class Calculator{
     public static void main(String args[]){
-            System.out.println("--------WELCOME-----------------");
+            System.out.println("-------------WELCOME-----------------");
             System.out.println("--------------------------------");
             System.out.println("This is a Simple Console-based Calculator");
             System.out.println("Select your choice from below (1-6):");
@@ -20,7 +20,7 @@ public class Calculator{
                 System.out.println("Exiting Calculator.Have a good day!");
                 
             }
-
+        
             System.out.print("Enter first number:");
             double num1=sc.nextDouble();
             System.out.print("Enter second number:");
@@ -50,7 +50,6 @@ public class Calculator{
                         System.out.println("Result of division is:" + result);
                         break;
                     }
-                    
                 case 5:
                     if(num2==0){
                     System.out.println("Error");
@@ -63,6 +62,6 @@ public class Calculator{
                 default:
                 System.out.println("Invalid choice.Please enter a valid choice...");
             }
-
+            
         }
     }
