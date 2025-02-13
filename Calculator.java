@@ -1,9 +1,7 @@
 import java.util.Scanner;
-public class SimpleCalculator{
+public class Calculator{
     public static void main(String args[]){
-
-        while(true){
-            System.out.println("-----------------WELCOME-----------------");
+            System.out.println("--------WELCOME-----------------");
             System.out.println("--------------------------------");
             System.out.println("This is a Simple Console-based Calculator");
             System.out.println("Select your choice from below (1-6):");
@@ -15,11 +13,12 @@ public class SimpleCalculator{
             System.out.println("6.Exit");
 
             Scanner sc=new Scanner(System.in);
+            System.out.println("Enter your choice:");
             int choice=sc.nextInt();
 
             if(choice==6){
                 System.out.println("Exiting Calculator.Have a good day!");
-                break;
+                
             }
 
             System.out.print("Enter first number:");
@@ -66,6 +65,4 @@ public class SimpleCalculator{
             }
 
         }
-        sc.close();
     }
-}
