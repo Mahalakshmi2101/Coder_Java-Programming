@@ -1,0 +1,163 @@
+import java.io.*;
+import java.util.*;
+
+class InventoryManagement {
+    private static final String FILE_NAME = "inventory.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nInventory Management System");
+            System.out.println("1. Add Product");
+            System.out.println("2. View Products");
+            System.out.println("3. Update Product");
+            System.out.println("4. Delete Product");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                continue;
+            }
+
+            switch (choice) {
+                case 1:
+                    addProduct(scanner);
+                    break;
+                case 2:
+                    viewProducts();
+                    break;
+                case 3:
+                    updateProduct(scanner);
+                    break;
+                case 4:
+                    deleteProduct(scanner);
+                    break;
+                case 5:
+                    System.out.println("Exiting system...");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        }
+    }
+
+    private static void addProduct(Scanner scanner) {
+        System.out.print("Enter Product ID: ");
+        String id = scanner.nextLine();
+        System.out.print("Enter Product Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Product Price: ");
+        String price = scanner.nextLine();
+        System.out.print("Enter Product Quantity: ");
+        String quantity = scanner.nextLine();
+
+        try (FileWriter writer = new FileWriter(FILE_NAME, true)) {
+            writer.write(id + "," + name + "," + price + "," + quantity + "\n");
+            System.out.println("Product added successfully!");
+        } catch (IOException e) {
+            System.out.println("Error saving product: " + e.getMessage());
+        }
+    }
+
+    private static void viewProducts() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            System.out.println("No products found.");
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            System.out.println("\nProduct List:");
+            while ((line = reader.readLine()) != null) {
+                String[] details = line.split(",");
+                System.out.println("ID: " + details[0] + ", Name: " + details[1] +
+                        ", Price: " + details[2] + ", Quantity: " + details[3]);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    private static void updateProduct(Scanner scanner) {
+        List<String> products = new ArrayList<>();
+        System.out.print("Enter Product ID to update: ");
+        String idToUpdate = scanner.nextLine();
+        boolean found = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] details = line.split(",");
+                if (details[0].equals(idToUpdate)) {
+                    System.out.print("Enter new Name: ");
+                    details[1] = scanner.nextLine();
+                    System.out.print("Enter new Price: ");
+                    details[2] = scanner.nextLine();
+                    System.out.print("Enter new Quantity: ");
+                    details[3] = scanner.nextLine();
+                    line = String.join(",", details);
+                    found = true;
+                }
+                products.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+            return;
+        }
+
+        if (!found) {
+            System.out.println("Product ID not found.");
+            return;
+        }
+
+        try (FileWriter writer = new FileWriter(FILE_NAME)) {
+            for (String product : products) {
+                writer.write(product + "\n");
+            }
+            System.out.println("Product updated successfully!");
+        } catch (IOException e) {
+            System.out.println("Error updating product: " + e.getMessage());
+        }
+    }
+
+    private static void deleteProduct(Scanner scanner) {
+        List<String> products = new ArrayList<>();
+        System.out.print("Enter Product ID to delete: ");
+        String idToDelete = scanner.nextLine();
+        boolean found = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.startsWith(idToDelete + ",")) {
+                    products.add(line);
+                } else {
+                    found = true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+            return;
+        }
+
+        if (!found) {
+            System.out.println("Product ID not found.");
+            return;
+        }
+
+        try (FileWriter writer = new FileWriter(FILE_NAME)) {
+            for (String product : products) {
+                writer.write(product + "\n");
+            }
+            System.out.println("Product deleted successfully!");
+        } catch (IOException e) {
+            System.out.println("Error deleting product: " + e.getMessage());
+        }
+    }
+}
