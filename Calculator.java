@@ -62,6 +62,6 @@ public class Calculator{
                 default:
                 System.out.println("Invalid choice.Please enter a valid choice...");
             }
-            
+            sc.close();
         }
     }
